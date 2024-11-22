@@ -13,6 +13,8 @@ export const createCategory = async (req, res) => {
 
 export const getAllCategories = async (req, res) => {
   try {
+    await connectDB(); // Ensure DB is connected before handling the request
+
     const { 
       page = 1, 
       limit = 10, 
@@ -27,6 +29,7 @@ export const getAllCategories = async (req, res) => {
 
     const sortOptions = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
 
+    // Efficient pagination using limit and skip
     const categories = await Category.find(searchQuery)
       .sort(sortOptions)
       .limit(Number(limit))
@@ -41,10 +44,10 @@ export const getAllCategories = async (req, res) => {
       totalCategories: total
     });
   } catch (error) {
+    console.error('Error fetching categories:', error); 
     res.status(500).json({ message: error.message });
   }
 };
-
 export const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
