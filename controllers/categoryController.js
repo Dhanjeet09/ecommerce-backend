@@ -13,8 +13,33 @@ export const createCategory = async (req, res) => {
 
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    res.json(categories);
+    const { 
+      page = 1, 
+      limit = 10, 
+      search = '',
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = req.query;
+
+    const searchQuery = search 
+      ? { name: { $regex: search, $options: 'i' } } 
+      : {};
+
+    const sortOptions = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+
+    const categories = await Category.find(searchQuery)
+      .sort(sortOptions)
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit));
+
+    const total = await Category.countDocuments(searchQuery);
+
+    res.json({
+      categories,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
+      totalCategories: total
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

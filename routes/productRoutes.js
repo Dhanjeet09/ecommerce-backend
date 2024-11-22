@@ -1,14 +1,22 @@
-
-// productRoutes.js
 import express from 'express';
-import * as productController from '../controllers/productController.js';
+import { 
+  createProduct, 
+  getAllProducts, 
+  getProductById, 
+  updateProduct, 
+  deleteProduct 
+} from '../controllers/productController.js';
+import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/', productController.createProduct);
-router.get('/', productController.getAllProducts);
-router.get('/:id', productController.getProductById);
-router.put('/:id', productController.updateProduct);
-router.delete('/:id', productController.deleteProduct);
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+
+// Protected routes
+router.use(authenticate);
+router.post('/', authorize(['admin']), createProduct);
+router.put('/:id', authorize(['admin']), updateProduct);
+router.delete('/:id', authorize(['admin']), deleteProduct);
 
 export default router;

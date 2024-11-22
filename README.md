@@ -1,54 +1,116 @@
 # E-Commerce Backend
 
 ## Project Overview
-A backend service for managing Products and Categories using Node.js, Express, and MongoDB.
+A robust backend service for e-commerce operations built with Node.js, Express, and MongoDB. This service provides authentication, product management, and category management with complete CRUD operations.
 
 ## Features
+- User Authentication (Register/Login)
+- Role-based Authorization (Admin/User)
 - CRUD operations for Categories
 - CRUD operations for Products
-- Referential integrity between Categories and Products
-- Data validation and constraints
+- Advanced Filtering and Pagination
+- Data Validation and Constraints
+- Error Handling
+- Security Features
 
 ## Prerequisites
 - Node.js (v14+)
 - MongoDB
 
 ## Setup Instructions
+
 1. Clone the repository
-```bash
-git clone https://your-repo-url.git
-cd ecommerce-backend
-```
+2. Install dependencies using npm install
+3. Create a .env file with required environment variables
+4. Run the application using npm commands
 
-2. Install dependencies
-```bash
-npm install
-```
+## API Documentation
 
-3. Create a `.env` file with:
-```
-MONGODB_URI=your_mongodb_connection_string
-PORT=5000
-```
+### Authentication Endpoints
+- Register a new user (POST /api/auth/register)
+- Login user (POST /api/auth/login)
 
-4. Run the application
-```bash
-npm start  # Production
-npm run dev  # Development with nodemon
-```
+### Categories Endpoints
+- Get all categories (GET /api/categories)
+- Get category by ID (GET /api/categories/:id)
+- Create a category (POST /api/categories) - Admin only
+- Update a category (PUT /api/categories/:id) - Admin only
+- Delete a category (DELETE /api/categories/:id) - Admin only
 
-## API Endpoints
+Query Parameters for GET requests:
+- page
+- limit
+- search
+- sortBy
+- sortOrder
 
-### Categories
-- `POST /api/categories`: Create a category
-- `GET /api/categories`: Get all categories
-- `GET /api/categories/:id`: Get category by ID
-- `PUT /api/categories/:id`: Update a category
-- `DELETE /api/categories/:id`: Delete a category
+### Products Endpoints
+- Get all products (GET /api/products)
+- Get product by ID (GET /api/products/:id)
+- Create a product (POST /api/products) - Admin only
+- Update a product (PUT /api/products/:id) - Admin only
+- Delete a product (DELETE /api/products/:id) - Admin only
 
-### Products
-- `POST /api/products`: Create a product
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get product by ID
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+Query Parameters for GET requests:
+- page
+- limit
+- search
+- category
+- minPrice
+- maxPrice
+- sortBy
+- sortOrder
+
+## Authentication
+Protected routes require a JWT token in the Authorization header
+
+## Error Handling
+The API returns appropriate HTTP status codes and error messages:
+- 200: Success
+- 201: Created
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not Found
+- 500: Internal Server Error
+
+## Data Models
+
+### User
+- username (required, unique)
+- email (required, unique)
+- password (required)
+- role (user/admin)
+- isActive status
+
+### Category
+- name (required, unique)
+- description
+- isActive status
+
+### Product
+- name (required)
+- description
+- price (required)
+- stock (required)
+- categoryId (required, reference to Category)
+- images array
+- isActive status
+
+## Security Features
+- Password Hashing
+- JWT Authentication
+- Role-based Authorization
+- Input Validation
+- Error Handling
+- CORS Protection
+
+## Contributing
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details

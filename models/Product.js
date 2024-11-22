@@ -4,7 +4,13 @@ const ProductSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Product name is required'],
-    trim: true
+    trim: true,
+    maxlength: [100, 'Product name cannot exceed 100 characters']
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: [1000, 'Description cannot exceed 1000 characters']
   },
   price: {
     type: Number,
@@ -21,6 +27,14 @@ const ProductSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: [true, 'Category is required for the product']
+  },
+  images: [{
+    type: String,
+    trim: true
+  }],
+  isActive: {
+    type: Boolean,
+    default: true
   }
 }, { timestamps: true });
 
