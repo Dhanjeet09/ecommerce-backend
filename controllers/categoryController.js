@@ -1,5 +1,6 @@
 import Category from '../models/Category.js';
 import Product from '../models/Product.js';
+import connectDB from '../config/database.js';
 
 export const createCategory = async (req, res) => {
   try {
